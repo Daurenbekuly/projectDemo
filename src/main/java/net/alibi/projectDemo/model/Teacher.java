@@ -9,8 +9,8 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = false, exclude = "scholars")
 @Entity
 @Table(name = "c_teacher")
 public class Teacher extends User {

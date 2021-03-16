@@ -1,6 +1,6 @@
 package net.alibi.projectDemo.controller;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import net.alibi.projectDemo.dto.UserDto;
 import net.alibi.projectDemo.model.User;
 import net.alibi.projectDemo.repository.ScholarRepository;
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-@Data
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthenticationRestController {

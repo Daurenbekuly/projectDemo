@@ -1,7 +1,6 @@
 package net.alibi.projectDemo.controller;
 
-import lombok.Data;
-import net.alibi.projectDemo.model.Diary;
+import lombok.RequiredArgsConstructor;
 import net.alibi.projectDemo.model.Scholar;
 import net.alibi.projectDemo.repository.DiaryRepository;
 import net.alibi.projectDemo.repository.ScholarRepository;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Data
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/scholar")
 public class ScholarController {

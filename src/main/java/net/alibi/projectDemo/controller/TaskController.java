@@ -1,6 +1,6 @@
 package net.alibi.projectDemo.controller;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import net.alibi.projectDemo.model.Task;
 import net.alibi.projectDemo.repository.TaskRepository;
 import org.modelmapper.ModelMapper;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Data
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/teacher/task")
 public class TaskController implements Serializable {
@@ -39,8 +39,8 @@ public class TaskController implements Serializable {
         Task rpTask = taskRepository.findById(taskId).orElseThrow(
                 () -> new RuntimeException("Error task with id "+ taskId +" not found"));
         rpTask.setLevel(task.getLevel());
+        rpTask.setSubject(task.getSubject());
         rpTask.setQuestion(task.getQuestion());
-        rpTask.setTheme(task.getTheme());
         rpTask.setTeacher(task.getTeacher());
 
         return taskRepository.save(rpTask);

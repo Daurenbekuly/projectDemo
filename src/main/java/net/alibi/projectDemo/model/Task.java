@@ -5,17 +5,19 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = false, exclude = "teacher")
 @Entity
 @Table(name = "c_task")
 public class Task extends BaseModel {
 
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "level_")
-    private String level;
+    private Level level;
 
-    @Column(name = "theme_")
-    private String theme;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "subject_")
+    private Subject subject;
 
     @Column(name = "question_")
     private String question;

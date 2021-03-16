@@ -1,11 +1,13 @@
 package net.alibi.projectDemo.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 @Data
+@EqualsAndHashCode(exclude = "task")
 @Entity
 @Table(name = "c_file")
 public class FileDB {
@@ -21,6 +23,10 @@ public class FileDB {
 
     @Lob
     private byte[] data;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "task_id_")
+    private Task task;
 
     public FileDB() {
 

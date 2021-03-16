@@ -1,6 +1,6 @@
 package net.alibi.projectDemo.services;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import net.alibi.projectDemo.ProjectDemoApplication;
 import net.alibi.projectDemo.model.FileDB;
 import net.alibi.projectDemo.repository.FileDBRepository;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-@Data
+@RequiredArgsConstructor
 @Service
 public class FileStorageService {
 

@@ -5,8 +5,8 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
 @MappedSuperclass
 public abstract class User extends BaseModel {
 

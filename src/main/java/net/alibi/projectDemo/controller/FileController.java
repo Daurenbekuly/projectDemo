@@ -3,7 +3,7 @@ package net.alibi.projectDemo.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import net.alibi.projectDemo.masssage.ResponseFile;
 import net.alibi.projectDemo.masssage.ResponseMessage;
 import net.alibi.projectDemo.model.FileDB;
@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
-@Data
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/api/teacher/task/file")
 public class FileController {

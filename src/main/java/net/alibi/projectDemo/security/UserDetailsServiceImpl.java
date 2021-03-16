@@ -1,6 +1,6 @@
 package net.alibi.projectDemo.security;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import net.alibi.projectDemo.model.User;
 import net.alibi.projectDemo.repository.ScholarRepository;
 import net.alibi.projectDemo.repository.TeacherRepository;
@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Data
+@RequiredArgsConstructor
 @Service("userDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
 

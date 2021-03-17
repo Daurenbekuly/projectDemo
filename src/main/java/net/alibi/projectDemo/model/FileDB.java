@@ -28,6 +28,10 @@ public class FileDB {
     @JoinColumn(name = "task_id_")
     private Task task;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "status_", columnDefinition = "varchar(255) default 'BANNED'")
+    private Status status;
+
     public FileDB() {
 
     }

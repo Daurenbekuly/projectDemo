@@ -1,7 +1,6 @@
 package net.alibi.projectDemo.services;
 
 import lombok.RequiredArgsConstructor;
-import net.alibi.projectDemo.ProjectDemoApplication;
 import net.alibi.projectDemo.model.FileDB;
 import net.alibi.projectDemo.repository.FileDBRepository;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -13,6 +12,8 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import static net.alibi.projectDemo.ProjectDemoApplication.MY_QUEUE;
+
 @RequiredArgsConstructor
 @Service
 public class FileStorageService {
@@ -23,11 +24,12 @@ public class FileStorageService {
     public void store(MultipartFile file) throws IOException {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         FileDB fileDB = new FileDB(fileName, file.getContentType(), file.getBytes());
-        rabbitTemplate.convertAndSend(ProjectDemoApplication.SFG_MESSAGE_QUEUE, fileDB);
+        fileDBRepository.save(fileDB);
+        rabbitTemplate.convertAndSend(MY_QUEUE, fileDB.getId());
     }
 
     public FileDB getFile(String id) {
-        return fileDBRepository.findById(id).get();
+        return fileDBRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
     public Stream<FileDB> getAllFiles() {

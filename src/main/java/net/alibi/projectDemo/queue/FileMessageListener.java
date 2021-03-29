@@ -1,14 +1,14 @@
-package net.alibi.projectDemo.listener;
+package net.alibi.projectDemo.queue;
 
 import lombok.RequiredArgsConstructor;
 import net.alibi.projectDemo.model.FileDB;
-import net.alibi.projectDemo.model.Status;
+import net.alibi.projectDemo.model.enums.Status;
 import net.alibi.projectDemo.repository.FileDBRepository;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
-import static net.alibi.projectDemo.ProjectDemoApplication.MY_QUEUE;
+import static net.alibi.projectDemo.queue.RabbitConfiguration.MY_QUEUE;
 
 @RequiredArgsConstructor
 @EnableRabbit

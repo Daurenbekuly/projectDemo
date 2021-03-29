@@ -2,11 +2,13 @@ package net.alibi.projectDemo.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.alibi.projectDemo.model.enums.Level;
+import net.alibi.projectDemo.model.enums.Subject;
 
 import javax.persistence.*;
 
 @Data
-@EqualsAndHashCode(callSuper = false, exclude = "teacher")
+@EqualsAndHashCode(callSuper = false, exclude = {"user"})
 @Entity
 @Table(name = "c_task")
 public class Task extends BaseModel {
@@ -23,6 +25,6 @@ public class Task extends BaseModel {
     private String question;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "teacher_id_")
-    private Teacher teacher;
+    @JoinColumn(name = "user_id_")
+    private User user;
 }

@@ -1,10 +1,12 @@
 package net.alibi.projectDemo.controller;
 
 import lombok.RequiredArgsConstructor;
+import net.alibi.projectDemo.dto.JwtResponse;
 import net.alibi.projectDemo.dto.UserDto;
 import net.alibi.projectDemo.model.User;
-import net.alibi.projectDemo.repository.ScholarRepository;
-import net.alibi.projectDemo.repository.TeacherRepository;
+import net.alibi.projectDemo.model.UserRole;
+import net.alibi.projectDemo.model.enums.Role;
+import net.alibi.projectDemo.repository.UserRepository;
 import net.alibi.projectDemo.security.JwtTokenProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,40 +15,40 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/auth")
 public class AuthenticationRestController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
-    private final TeacherRepository teacherRepository;
-    private final ScholarRepository scholarRepository;
+    private final UserRepository userRepository;
 
-    @PostMapping("/login")
+    @PostMapping("/signin")
     public ResponseEntity<?> authenticate(@RequestBody UserDto request) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-            User user = teacherRepository.findByEmail(request.getEmail())
-                    .orElseGet(() -> scholarRepository.findByEmail(request.getEmail())
-                            .orElseThrow(() -> new UsernameNotFoundException("User doesn't exist")));
-            String token = jwtTokenProvider.createToken(request.getEmail(), user.getRole().name());
-            Map<Object, Object> response = new HashMap<>();
-            response.put("email", request.getEmail());
-            response.put("token", token);
-            return ResponseEntity.ok(response);
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+            User user = userRepository.findByUserName(request.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("User doesn't exist"));
+            String token = jwtTokenProvider.createToken(request.getUsername(), user.getUserRoles());
+
+            Set<Role> roleSet = user.getUserRoles().stream().map(UserRole::getRole).collect(Collectors.toSet());
+            return ResponseEntity.ok(new JwtResponse(
+                    token,
+                    user.getId(),
+                    user.getUserName(),
+                    user.getEmail(),
+                    roleSet));
         } catch (AuthenticationException e) {
-            return new ResponseEntity<>("Invalid email/password combination", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Invalid username/password combination", HttpStatus.FORBIDDEN);
         }
     }
 

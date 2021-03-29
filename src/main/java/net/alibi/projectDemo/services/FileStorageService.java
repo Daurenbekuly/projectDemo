@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static net.alibi.projectDemo.ProjectDemoApplication.MY_QUEUE;
+import static net.alibi.projectDemo.queue.RabbitConfiguration.MY_QUEUE;
 
 @RequiredArgsConstructor
 @Service

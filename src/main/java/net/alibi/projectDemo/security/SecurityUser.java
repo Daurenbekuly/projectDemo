@@ -1,7 +1,7 @@
 package net.alibi.projectDemo.security;
 
 import lombok.Data;
-import net.alibi.projectDemo.model.Status;
+import net.alibi.projectDemo.model.enums.Status;
 import net.alibi.projectDemo.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class SecurityUser implements UserDetails {
@@ -54,14 +55,17 @@ public class SecurityUser implements UserDetails {
     }
 
     public static UserDetails fromUser(User user) {
+        List<GrantedAuthority> authorities = user.getUserRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRole().name()))
+                .collect(Collectors.toList());
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
+                user.getUserName(),
                 user.getPassword(),
                 user.getStatus().equals(Status.ACTIVE),
                 user.getStatus().equals(Status.ACTIVE),
                 user.getStatus().equals(Status.ACTIVE),
                 user.getStatus().equals(Status.ACTIVE),
-                user.getRole().getAuthorities()
+                authorities
         );
     }
 }

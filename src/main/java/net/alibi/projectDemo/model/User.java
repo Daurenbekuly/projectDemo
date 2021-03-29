@@ -2,16 +2,23 @@ package net.alibi.projectDemo.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.alibi.projectDemo.model.enums.Status;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-@MappedSuperclass
-public abstract class User extends BaseModel {
+@EqualsAndHashCode(callSuper = true, exclude = "userRoles")
+@Entity
+@Table(name = "c_user")
+public class User extends BaseModel {
 
     @Column(name = "email_", unique = true)
     private String email;
+
+    @Column(name = "user_name_")
+    private String userName;
 
     @Column(name = "password_")
     private String password;
@@ -32,11 +39,12 @@ public abstract class User extends BaseModel {
     private String gender;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "role_")
-    private Role role;
-
-    @Enumerated(value = EnumType.STRING)
     @Column(name = "status_")
     private Status status;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "w_users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<UserRole> userRoles = new HashSet<>();
 }

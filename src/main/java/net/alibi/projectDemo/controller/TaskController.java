@@ -41,7 +41,6 @@ public class TaskController implements Serializable {
         rpTask.setLevel(task.getLevel());
         rpTask.setSubject(task.getSubject());
         rpTask.setQuestion(task.getQuestion());
-        rpTask.setTeacher(task.getTeacher());
 
         return taskRepository.save(rpTask);
     }

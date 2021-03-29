@@ -1,11 +1,17 @@
 package net.alibi.projectDemo.dto;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDto implements Serializable {
-    private String email;
+    private String username;
     private String password;
 }

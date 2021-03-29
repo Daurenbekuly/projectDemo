@@ -2,6 +2,7 @@ package net.alibi.projectDemo.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.alibi.projectDemo.model.enums.Status;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;

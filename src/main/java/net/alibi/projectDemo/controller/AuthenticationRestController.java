@@ -14,11 +14,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,12 +31,12 @@ public class AuthenticationRestController {
     private final UserRepository userRepository;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticate(@RequestBody UserDto request) {
+    public ResponseEntity<?> authenticate(@Valid @RequestBody UserDto userDto) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-            User user = userRepository.findByUserName(request.getUsername())
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword()));
+            User user = userRepository.findByUserName(userDto.getUsername())
                     .orElseThrow(() -> new UsernameNotFoundException("User doesn't exist"));
-            String token = jwtTokenProvider.createToken(request.getUsername(), user.getUserRoles());
+            String token = jwtTokenProvider.createToken(userDto.getUsername(), user.getUserRoles());
 
             Set<Role> roleSet = user.getUserRoles().stream().map(UserRole::getRole).collect(Collectors.toSet());
             return ResponseEntity.ok(new JwtResponse(
@@ -50,11 +48,5 @@ public class AuthenticationRestController {
         } catch (AuthenticationException e) {
             return new ResponseEntity<>("Invalid username/password combination", HttpStatus.FORBIDDEN);
         }
-    }
-
-    @PostMapping("/logout")
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
-        SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
-        securityContextLogoutHandler.logout(request, response, null);
     }
 }

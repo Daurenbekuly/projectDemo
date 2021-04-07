@@ -9,8 +9,7 @@ public enum Role {
 
     ROLE_ADMIN(Set.of(Permission.DEVELOPERS_READ, Permission.DEVELOPERS_WRITE)),
     ROLE_MODERATOR(Set.of(Permission.DEVELOPERS_READ, Permission.DEVELOPERS_WRITE)),
-    ROLE_TEACHER(Set.of(Permission.DEVELOPERS_READ, Permission.DEVELOPERS_WRITE)),
-    ROLE_SCHOLAR(Set.of(Permission.DEVELOPERS_READ));
+    ROLE_USER(Set.of(Permission.DEVELOPERS_READ));
 
     private final Set<Permission> permissions;
 

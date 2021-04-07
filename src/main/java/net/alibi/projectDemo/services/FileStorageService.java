@@ -12,20 +12,20 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static net.alibi.projectDemo.queue.RabbitConfiguration.MY_QUEUE;
+//import static net.alibi.projectDemo.queue.RabbitConfiguration.MY_QUEUE;
 
 @RequiredArgsConstructor
 @Service
 public class FileStorageService {
 
-    private final RabbitTemplate rabbitTemplate;
+//    private final RabbitTemplate rabbitTemplate;
     private final FileDBRepository fileDBRepository;
 
     public void store(MultipartFile file) throws IOException {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         FileDB fileDB = new FileDB(fileName, file.getContentType(), file.getBytes());
         fileDBRepository.save(fileDB);
-        rabbitTemplate.convertAndSend(MY_QUEUE, fileDB.getId());
+//        rabbitTemplate.convertAndSend(MY_QUEUE, fileDB.getId());
     }
 
     public FileDB getFile(String id) {

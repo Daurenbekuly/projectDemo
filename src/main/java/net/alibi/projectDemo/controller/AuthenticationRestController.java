@@ -33,10 +33,10 @@ public class AuthenticationRestController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticate(@Valid @RequestBody UserDto userDto) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword()));
-            User user = userRepository.findByUserName(userDto.getUsername())
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getUserName(), userDto.getPassword()));
+            User user = userRepository.findByUserName(userDto.getUserName())
                     .orElseThrow(() -> new UsernameNotFoundException("User doesn't exist"));
-            String token = jwtTokenProvider.createToken(userDto.getUsername(), user.getUserRoles());
+            String token = jwtTokenProvider.createToken(userDto.getUserName(), user.getUserRoles());
 
             Set<Role> roleSet = user.getUserRoles().stream().map(UserRole::getRole).collect(Collectors.toSet());
             return ResponseEntity.ok(new JwtResponse(

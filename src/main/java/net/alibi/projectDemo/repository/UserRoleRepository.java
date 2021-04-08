@@ -1,0 +1,11 @@
+package net.alibi.projectDemo.repository;
+
+import net.alibi.projectDemo.model.UserRole;
+import net.alibi.projectDemo.model.enums.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
+    Optional<UserRole> findByRole(Role name);
+}

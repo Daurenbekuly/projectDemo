@@ -11,10 +11,17 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(callSuper = true, exclude = "userRoles")
 @Entity
-@Table(name = "c_user")
+@Table(
+        name = "c_user",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "user_name_unique",
+                        columnNames = "user_name_")
+        }
+)
 public class User extends BaseModel {
 
-    @Column(name = "email_", unique = true)
+    @Column(name = "email_")
     private String email;
 
     @Column(name = "user_name_")

@@ -12,7 +12,6 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class JwtResponse {
     private final String accessToken;
-    private final String tokenType = "Bearer";
     private final Long id;
     private final String username;
     private final String email;

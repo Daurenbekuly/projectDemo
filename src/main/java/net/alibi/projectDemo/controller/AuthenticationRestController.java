@@ -46,7 +46,7 @@ public class AuthenticationRestController {
                     user.getEmail(),
                     roleSet));
         } catch (AuthenticationException e) {
-            return new ResponseEntity<>("Invalid username/password combination", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Invalid username/password combination || user was banned", HttpStatus.FORBIDDEN);
         }
     }
 }

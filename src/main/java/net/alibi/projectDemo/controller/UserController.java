@@ -38,7 +38,7 @@ public class UserController {
     @GetMapping("/{id}")
     public User getUser(@PathVariable(value = "id") Long userId) {
         return userRepository.findById(userId).orElseThrow(
-                () -> new RuntimeException("Error teacher with id "+ userId +" not found"));
+                () -> new RuntimeException("Error user with id "+ userId +" not found"));
     }
 
     @PostMapping
@@ -70,7 +70,7 @@ public class UserController {
     @PostMapping("/{id}")
     public User editUser(@PathVariable(value = "id") Long userId, @Valid @RequestBody UserDto userDto) {
         User rpUser = userRepository.findById(userId).orElseThrow(
-                () -> new RuntimeException("Error teacher with id "+ userId +" not found"));
+                () -> new RuntimeException("Error user with id "+ userId +" not found"));
         rpUser.setFirstName(userDto.getFirstName());
         rpUser.setLastName(userDto.getLastName());
         rpUser.setStatus(userDto.getStatus());
@@ -81,7 +81,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> deleteUser(@PathVariable (value = "id") Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new RuntimeException("Error teacher with id "+ userId +" not found" ));
+                () -> new RuntimeException("Error user with id "+ userId +" not found" ));
         userRepository.delete(user);
         return ResponseEntity.ok().build();
 

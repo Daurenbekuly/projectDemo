@@ -4,12 +4,13 @@ import lombok.*;
 import net.alibi.projectDemo.model.enums.Status;
 
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserDto implements Serializable {
     private Long id;
     private Integer phone;
     private Integer age;

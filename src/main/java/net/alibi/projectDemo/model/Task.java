@@ -24,6 +24,9 @@ public class Task extends BaseModel {
     @Column(name = "question_")
     private String question;
 
+    @Column(name = "name_")
+    private String name;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id_")
     private User user;

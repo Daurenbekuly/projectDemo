@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/task")
-public class TaskController implements Serializable {
+public class TaskController {
 
     private final ModelMapper modelMapper;
     private final TaskRepository taskRepository;
@@ -46,12 +46,13 @@ public class TaskController implements Serializable {
     }
 
     @PostMapping("/{id}/edit")
-    public Task editTask(@PathVariable(value = "id") Long taskId, @RequestBody Task task) {
+    public Task editTask(@PathVariable(value = "id") Long taskId, @Valid @RequestBody TaskDto taskDto) {
+        Task rqTask = modelMapper.map(taskDto, Task.class);
         Task rpTask = taskRepository.findById(taskId).orElseThrow(
                 () -> new RuntimeException("Error task with id "+ taskId +" not found"));
-        rpTask.setLevel(task.getLevel());
-        rpTask.setSubject(task.getSubject());
-        rpTask.setQuestion(task.getQuestion());
+        rpTask.setLevel(rqTask.getLevel());
+        rpTask.setSubject(rqTask.getSubject());
+        rpTask.setQuestion(rqTask.getQuestion());
 
         return taskRepository.save(rpTask);
     }

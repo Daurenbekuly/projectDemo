@@ -1,13 +1,13 @@
 package net.alibi.projectDemo.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import net.alibi.projectDemo.model.enums.Status;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(exclude = "task")
 @Entity
 @Table(name = "c_file")
@@ -33,13 +33,10 @@ public class FileDB {
     @Column(name = "status_", columnDefinition = "varchar(255) default 'BANNED'")
     private Status status;
 
-    public FileDB() {
-
-    }
-
-    public FileDB(String name, String type, byte[] data) {
+    public FileDB(String name, String type, byte[] data,Task task) {
         this.name = name;
         this.type = type;
         this.data = data;
+        this.task = task;
     }
 }

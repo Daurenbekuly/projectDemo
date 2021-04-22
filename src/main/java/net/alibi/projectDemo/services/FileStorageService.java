@@ -5,12 +5,13 @@ import net.alibi.projectDemo.model.FileDB;
 import net.alibi.projectDemo.model.Task;
 import net.alibi.projectDemo.repository.FileDBRepository;
 import net.alibi.projectDemo.repository.TaskRepository;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -37,7 +38,8 @@ public class FileStorageService {
         return fileDBRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
-    public Stream<FileDB> getAllFiles() {
-        return fileDBRepository.findAll().stream();
+    public Stream<FileDB> getAllFiles(Long id) {
+        Task task = taskRepository.findById(id).orElseThrow(RuntimeException::new);
+        return fileDBRepository.findByTask(task).stream();
     }
 }

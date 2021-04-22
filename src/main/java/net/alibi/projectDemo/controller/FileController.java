@@ -1,20 +1,24 @@
 package net.alibi.projectDemo.controller;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
-import net.alibi.projectDemo.masssage.ResponseFile;
+import net.alibi.projectDemo.dto.FileDto;
 import net.alibi.projectDemo.masssage.ResponseMessage;
 import net.alibi.projectDemo.model.FileDB;
 import net.alibi.projectDemo.model.Task;
 import net.alibi.projectDemo.repository.FileDBRepository;
 import net.alibi.projectDemo.repository.TaskRepository;
 import net.alibi.projectDemo.services.FileStorageService;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,22 +47,14 @@ public class FileController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<ResponseFile>> getListFiles() {
-        List<ResponseFile> files = storageService.getAllFiles().map(dbFile -> {
-            String fileDownloadUri = ServletUriComponentsBuilder
-                    .fromCurrentContextPath()
-                    .path("/files/")
-                    .path(dbFile.getId())
-                    .toUriString();
-
-            return new ResponseFile(
-                    dbFile.getId(),
-                    dbFile.getName(),
-                    fileDownloadUri,
-                    dbFile.getType(),
-                    dbFile.getData().length);
-        }).collect(Collectors.toList());
+    @Transactional
+    @GetMapping("/{id}/all")
+    public ResponseEntity<List<FileDto>> getListFiles(@PathVariable (value = "id") Long id) {
+        List<FileDto> files = storageService.getAllFiles(id).map(dbFile -> new FileDto(
+                dbFile.getId(),
+                dbFile.getName(),
+                dbFile.getType(),
+                dbFile.getData().length)).collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
@@ -68,7 +64,6 @@ public class FileController {
         FileDB fileDB = storageService.getFile(id);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getName() + "\"")
                 .body(fileDB.getData());
     }
 

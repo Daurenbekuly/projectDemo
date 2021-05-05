@@ -8,7 +8,7 @@ import net.alibi.projectDemo.model.enums.Subject;
 import javax.persistence.*;
 
 @Data
-@EqualsAndHashCode(callSuper = false, exclude = {"scholar", "teacher"})
+@EqualsAndHashCode(callSuper = false, exclude = {"scholar"})
 @Entity
 @Table(name = "c_diary")
 public class Diary extends BaseModel {
@@ -16,8 +16,6 @@ public class Diary extends BaseModel {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "level_")
     private Level level;
-
-//@Todo add date
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "subject_")
@@ -32,8 +30,4 @@ public class Diary extends BaseModel {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "scholar_id_")
     private User scholar;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "teacher_id_")
-    private User teacher;
 }

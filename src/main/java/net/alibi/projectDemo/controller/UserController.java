@@ -1,17 +1,18 @@
 package net.alibi.projectDemo.controller;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.alibi.projectDemo.dto.UserDto;
 import net.alibi.projectDemo.model.User;
 import net.alibi.projectDemo.model.UserRole;
 import net.alibi.projectDemo.model.enums.Role;
-import net.alibi.projectDemo.model.enums.Status;
+import net.alibi.projectDemo.repository.DiaryRepository;
+import net.alibi.projectDemo.repository.TaskRepository;
 import net.alibi.projectDemo.repository.UserRepository;
 import net.alibi.projectDemo.repository.UserRoleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,6 +30,8 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
+    private final DiaryRepository diaryRepository;
+    private final TaskRepository taskRepository;
 
     @GetMapping
     public List<User> getAllTeachers() {
@@ -78,10 +81,14 @@ public class UserController {
         return userRepository.save(rpUser);
     }
 
+    @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> deleteUser(@PathVariable (value = "id") Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("Error user with id "+ userId +" not found" ));
+
+        taskRepository.deleteByUser(user);
+        diaryRepository.deleteByScholar(user);
         userRepository.delete(user);
         return ResponseEntity.ok().build();
 

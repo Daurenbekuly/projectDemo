@@ -7,8 +7,9 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Data
-@NoArgsConstructor
 @EqualsAndHashCode(exclude = "task")
+@ToString(exclude = "task")
+@NoArgsConstructor
 @Entity
 @Table(name = "c_file")
 public class FileDB {
